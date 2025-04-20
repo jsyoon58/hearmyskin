@@ -149,7 +149,6 @@ function sendToAirtableAndGo(combo, concern1, concern2) {
     allergy: localStorage.getItem("user_allergy"),
     concern1: concern1,
     concern2: concern2,
-    created_at: new Date().toISOString()
   };
 
   fetch("https://api.airtable.com/v0/apphc37JyCEAozVdD/survey_responses", {
