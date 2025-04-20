@@ -136,10 +136,12 @@ Object.keys(data).forEach(key => {
       body: JSON.stringify({ fields: data }),
     });
 
-    if (response.ok) {
-      window.location.href = `page3.html?combo=${encodeURIComponent(data.concern1 + '+' + data.concern2)}`;
-    } else {
-      alert('Airtable 저장 실패 😢');
-    }
+if (response.ok) {
+  window.location.href = `page3.html?combo=${encodeURIComponent(data.concern1 + '+' + data.concern2)}`;
+} else {
+  const errorText = await response.text();  // 에러 내용 받아오기
+  console.error("Airtable 오류 응답:", errorText);  // 콘솔에 출력
+  alert("Airtable 저장 실패 😢\n" + errorText);     // 사용자에게도 보여주기
+}
   }
 </script>
