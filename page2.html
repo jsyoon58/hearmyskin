@@ -135,40 +135,7 @@
         window.location.href = `page3.html?combo=${encodeURIComponent(combo)}`;
       });
     };
-
-function sendToAirtableAndGo(combo, concern1, concern2) {
-  // localStorage에 고민 저장
-  localStorage.setItem("concern1", concern1);
-  localStorage.setItem("concern2", concern2);
-
-  const data = {
-    language: localStorage.getItem("selectedLanguage"),
-    age: localStorage.getItem("user_age"),
-    gender: localStorage.getItem("user_gender"),
-    preferred_brand: localStorage.getItem("user_brand"),
-    allergy: localStorage.getItem("user_allergy"),
-    concern1: concern1,
-    concern2: concern2,
-  };
-
-  fetch("https://api.airtable.com/v0/apphc37JyCEAozVdD/survey_responses", {
-    method: "POST",
-    headers: {
-      Authorization: "Bearer patZYCOOyyBDeuciJ.96030290b2aa83dbc1605b5ce9c55903e3be7b066c3891101821b80cd6582a95",
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ fields: data })
-  })
-  .then(res => res.json())
-  .then(response => {
-    console.log("✅ Airtable 저장 성공:", response);
-    window.location.href = `page3.html?combo=${encodeURIComponent(combo)}`;
-  })
-  .catch(err => {
-    console.error("❌ Airtable 저장 실패:", err);
-    alert("데이터 저장 중 오류가 발생했습니다.");
-  });
-}
+    
   </script>
 </body>
 </html>
