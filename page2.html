@@ -102,10 +102,10 @@
 
       const data = {
         language: localStorage.getItem("selectedLanguage") || "Korean",
-        age: localStorage.getItem("age"),
-        gender: localStorage.getItem("gender"),
-        preferred_brand: localStorage.getItem("preferred_brand"),
-        allergies: localStorage.getItem("allergies"),
+        age: localStorage.getItem("user_age"),                    // 수정됨
+        gender: localStorage.getItem("user_gender"),              // 수정됨
+        preferred_brand: localStorage.getItem("user_brand"),      // 수정됨
+        allergies: localStorage.getItem("user_allergy"),          // 수정됨
         concern1: selectedKor[0],
         concern2: selectedKor[1],
       };
