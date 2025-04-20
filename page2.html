@@ -22,126 +22,157 @@
     </form>
   </div>
 
- <script>
-  const lang = localStorage.getItem("selectedLanguage") || "Korean";
+  <script>
+    const lang = localStorage.getItem("selectedLanguage") || "Korean";
 
-  const langKey = {
-    Korean: "kor", English: "eng", Chinese: "chn", Japanese: "jpn",
-    Vietnamese: "vie", Indonesian: "id", Russian: "ru"
-  };
+    const langKey = {
+      Korean: "kor", English: "eng", Chinese: "chn", Japanese: "jpn",
+      Vietnamese: "vie", Indonesian: "id", Russian: "ru"
+    };
 
-  const concernList = [
-    { kor: "민감성", eng: "Sensitive", chn: "敏感", jpn: "敏感肌", vie: "Da nhạy cảm", id: "Kulit Sensitif", ru: "Чувствительная кожа" },
-    { kor: "건성", eng: "Dry", chn: "干性", jpn: "乾燥肌", vie: "Da khô", id: "Kering", ru: "Сухая" },
-    { kor: "지성", eng: "Oily", chn: "油性", jpn: "脂性肌", vie: "Da dầu", id: "Berminyak", ru: "Жирная" },
-    { kor: "복합성(건성과 지성 혼합)", eng: "Combination", chn: "混合性", jpn: "混合性", vie: "Da hỗn hợp", id: "Campuran", ru: "Комбинированная" },
-    { kor: "여드름", eng: "Acne", chn: "痘痘", jpn: "ニキビ", vie: "Mụn", id: "Jerawat", ru: "Акне" },
-    { kor: "모공 축소", eng: "Pore Care", chn: "毛孔护理", jpn: "毛穴ケア", vie: "Lỗ chân lông", id: "Pori", ru: "Поры" },
-    { kor: "수분 공급", eng: "Hydration", chn: "补水", jpn: "保湿", vie: "Cấp nước", id: "Melembapkan", ru: "Увлажнение" },
-    { kor: "피지 조절", eng: "Oil Control", chn: "控油", jpn: "皮脂コントロール", vie: "Kiểm soát dầu", id: "Kontrol Minyak", ru: "Контроль жирности" },
-    { kor: "주름 개선", eng: "Anti-Wrinkle", chn: "抗皱", jpn: "シワ対策", vie: "Chống nhăn", id: "Anti-Kerut", ru: "Против морщин" },
-    { kor: "미백", eng: "Whitening", chn: "美白", jpn: "美白", vie: "Làm trắng", id: "Pemutih", ru: "Осветление" },
-    { kor: "기미·잡티(제거)", eng: "Spot Removal", chn: "祛斑", jpn: "シミ（除去）", vie: "Đốm", id: "Bintik", ru: "Пигментные пятна" },
-    { kor: "흉터(제거)", eng: "Scar Removal", chn: "祛疤", jpn: "傷跡（除去）", vie: "Sẹo", id: "Luka", ru: "Шрамы" }
-  ];
+    const concernList = [
+      { kor: "민감성", eng: "Sensitive", chn: "敏感", jpn: "敏感肌", vie: "Da nhạy cảm", id: "Kulit Sensitif", ru: "Чувствительная кожа" },
+      { kor: "건성", eng: "Dry", chn: "干性", jpn: "乾燥肌", vie: "Da khô", id: "Kering", ru: "Сухая" },
+      { kor: "지성", eng: "Oily", chn: "油性", jpn: "脂性肌", vie: "Da dầu", id: "Berminyak", ru: "Жирная" },
+      { kor: "복합성(건성과 지성 혼합)", eng: "Combination", chn: "混合性", jpn: "混合性", vie: "Da hỗn hợp", id: "Campuran", ru: "Комбинированная" },
+      { kor: "여드름", eng: "Acne", chn: "痘痘", jpn: "ニキビ", vie: "Mụn", id: "Jerawat", ru: "Акне" },
+      { kor: "모공 축소", eng: "Pore Care", chn: "毛孔护理", jpn: "毛穴ケア", vie: "Lỗ chân lông", id: "Pori", ru: "Поры" },
+      { kor: "수분 공급", eng: "Hydration", chn: "补水", jpn: "保湿", vie: "Cấp nước", id: "Melembapkan", ru: "Увлажнение" },
+      { kor: "피지 조절", eng: "Oil Control", chn: "控油", jpn: "皮脂コントロール", vie: "Kiểm soát dầu", id: "Kontrol Minyak", ru: "Контроль жирности" },
+      { kor: "주름 개선", eng: "Anti-Wrinkle", chn: "抗皱", jpn: "シワ対策", vie: "Chống nhăn", id: "Anti-Kerut", ru: "Против морщин" },
+      { kor: "미백", eng: "Whitening", chn: "美白", jpn: "美白", vie: "Làm trắng", id: "Pemutih", ru: "Осветление" },
+      { kor: "기미·잡티(제거)", eng: "Spot Removal", chn: "祛斑", jpn: "シミ（除去）", vie: "Đốm", id: "Bintik", ru: "Пигментные пятна" },
+      { kor: "흉터(제거)", eng: "Scar Removal", chn: "祛疤", jpn: "傷跡（除去）", vie: "Sẹo", id: "Luka", ru: "Шрамы" }
+    ];
 
-  const texts = {
-    Korean: {
-      title: "피부 고민은 무엇인가요?",
-      subtitle: "두 가지를 선택해 주세요",
-      submit: "제출",
-      alert: "피부 고민을 두 가지 선택해 주세요."
-    },
-    English: {
-      title: "What are your skin concerns?",
-      subtitle: "Please choose two",
-      submit: "Submit",
-      alert: "Please select two skin concerns."
-    },
-    // (이하 다국어 생략)
-  };
-
-  const key = langKey[lang];
-  const langText = texts[lang];
-
-  window.onload = () => {
-    document.getElementById("title").textContent = langText.title;
-    document.getElementById("subtitle").textContent = langText.subtitle;
-    document.getElementById("submit-button").textContent = langText.submit;
-    document.getElementById("page-title").textContent = langText.title;
-
-    const container = document.getElementById("checkbox-container");
-    concernList.forEach((item, index) => {
-      const label = document.createElement("label");
-      label.className = "flex items-center";
-      label.innerHTML = `<input type="checkbox" class="mr-2" name="option${index+1}"/> ${item[key]}`;
-      container.appendChild(label);
-    });
-
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-    checkboxes.forEach(cb => {
-      cb.addEventListener('change', () => {
-        const checked = [...checkboxes].filter(cb => cb.checked);
-        checkboxes.forEach(box => box.disabled = checked.length >= 2 && !box.checked);
-      });
-    });
-
-    const form = document.getElementById("skin-form");
-    form.addEventListener("submit", e => {
-      e.preventDefault();
-      const selected = [...checkboxes].filter(cb => cb.checked).map(cb => cb.parentElement.textContent.trim());
-      if (selected.length !== 2) {
-        alert(langText.alert);
-        return;
-      }
-
-      const selectedKor = selected.map(sel => {
-        const found = concernList.find(item => item[key] === sel);
-        return found ? found.kor : sel;
-      });
-
-      const data = {
-        language: localStorage.getItem("selectedLanguage") || "Korean",
-        age: localStorage.getItem("user_age"),                    // 수정됨
-        gender: localStorage.getItem("user_gender"),              // 수정됨
-        preferred_brand: localStorage.getItem("user_brand"),      // 수정됨
-        allergies: localStorage.getItem("user_allergy"),          // 수정됨
-        concern1: selectedKor[0],
-        concern2: selectedKor[1],
-      };
-
-      // ✅ undefined 또는 null 필드 제거
-Object.keys(data).forEach(key => {
-  if (data[key] === undefined || data[key] === null) {
-    delete data[key];
-  }
-});
-      sendToAirtableAndGo(data);
-    });
-  };
-
-  async function sendToAirtableAndGo(data) {
-    const airtableApiKey = 'Bearer patZYCOOyyBDeuciJ.96030290b2aa83dbc1605b5ce9c55903e3be7b066c3891101821b80cd6582a95';
-    const baseId = 'apphc37JyCEAozVdD';
-    const tableName = 'survey_responses';
-
-    const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: airtableApiKey,
-        'Content-Type': 'application/json',
+    const texts = {
+      Korean: {
+        title: "피부 고민은 무엇인가요?",
+        subtitle: "두 가지를 선택해 주세요",
+        submit: "제출",
+        alert: "피부 고민을 두 가지 선택해 주세요."
       },
-      body: JSON.stringify({ fields: data }),
-    });
+      English: {
+        title: "What are your skin concerns?",
+        subtitle: "Please choose two",
+        submit: "Submit",
+        alert: "Please select two skin concerns."
+      },
+      Chinese: {
+        title: "您的皮肤烦恼是什么？",
+        subtitle: "请选择两个",
+        submit: "提交",
+        alert: "请选择两个皮肤烦恼。"
+      },
+      Japanese: {
+        title: "お肌の悩みは何ですか？",
+        subtitle: "2つ選んでください",
+        submit: "提出する",
+        alert: "2つの肌の悩みを選んでください。"
+      },
+      Vietnamese: {
+        title: "Mối quan tâm về da của bạn là gì?",
+        subtitle: "Hãy chọn hai",
+        submit: "Gửi đi",
+        alert: "Vui lòng chọn hai mối quan tâm về da."
+      },
+      Indonesian: {
+        title: "Apa masalah kulit Anda?",
+        subtitle: "Silakan pilih dua",
+        submit: "Kirim",
+        alert: "Silakan pilih dua masalah kulit."
+      },
+      Russian: {
+        title: "Какие у вас проблемы с кожей?",
+        subtitle: "Пожалуйста, выберите два",
+        submit: "Отправить",
+        alert: "Пожалуйста, выберите два варианта."
+      }
+    };
 
-if (response.ok) {
-  window.location.href = `page3.html?combo=${encodeURIComponent(data.concern1 + '+' + data.concern2)}`;
-} else {
-  const errorText = await response.text();  // 에러 내용 받아오기
-  console.error("Airtable 오류 응답:", errorText);  // 콘솔에 출력
-  alert("Airtable 저장 실패 😢\n" + errorText);     // 사용자에게도 보여주기
-}
-  }
-</script>
+    const key = langKey[lang];
+    const langText = texts[lang] || texts["Korean"]; // fallback 처리
+
+    window.onload = () => {
+      document.getElementById("title").textContent = langText.title;
+      document.getElementById("subtitle").textContent = langText.subtitle;
+      document.getElementById("submit-button").textContent = langText.submit;
+      document.getElementById("page-title").textContent = langText.title;
+
+      const container = document.getElementById("checkbox-container");
+      concernList.forEach((item, index) => {
+        const label = document.createElement("label");
+        label.className = "flex items-center";
+        label.innerHTML = `<input type="checkbox" class="mr-2" name="option${index+1}"/> ${item[key]}`;
+        container.appendChild(label);
+      });
+
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          const checked = [...checkboxes].filter(cb => cb.checked);
+          checkboxes.forEach(box => box.disabled = checked.length >= 2 && !box.checked);
+        });
+      });
+
+      const form = document.getElementById("skin-form");
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const selected = [...checkboxes].filter(cb => cb.checked).map(cb => cb.parentElement.textContent.trim());
+        if (selected.length !== 2) {
+          alert(langText.alert);
+          return;
+        }
+
+        const selectedKor = selected.map(sel => {
+          const found = concernList.find(item => item[key] === sel);
+          return found ? found.kor : sel;
+        });
+
+        const data = {
+          language: localStorage.getItem("selectedLanguage") || "Korean",
+          age: localStorage.getItem("user_age"),
+          gender: localStorage.getItem("user_gender"),
+          preferred_brand: localStorage.getItem("user_brand"),
+          allergies: localStorage.getItem("user_allergy"),
+          concern1: selectedKor[0],
+          concern2: selectedKor[1],
+        };
+
+        Object.keys(data).forEach(key => {
+          if (data[key] === undefined || data[key] === null) {
+            delete data[key];
+          }
+        });
+
+        sendToAirtableAndGo(data);
+      });
+    };
+
+    async function sendToAirtableAndGo(data) {
+      const airtableApiKey = 'Bearer patZYCOOyyBDeuciJ.96030290b2aa83dbc1605b5ce9c55903e3be7b066c3891101821b80cd6582a95';
+      const baseId = 'apphc37JyCEAozVdD';
+      const tableName = 'survey_responses';
+
+      const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
+
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: airtableApiKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ fields: data }),
+      });
+
+      if (response.ok) {
+        window.location.href = `page3.html?combo=${encodeURIComponent(data.concern1 + '+' + data.concern2)}`;
+      } else {
+        const errorText = await response.text();
+        console.error("Airtable 오류 응답:", errorText);
+        alert("Airtable 저장 실패 😢\n" + errorText);
+      }
+    }
+  </script>
+</body>
+</html>
