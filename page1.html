@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>나에게 맞는 화장품은?</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+  <div class="max-w-md mx-auto p-6 flex flex-col items-center">
+    <h1 id="title-text" class="text-2xl font-bold mb-2 text-center">나에게 맞는 화장품은?</h1>
+    <p id="subtitle-text" class="text-sm text-center text-gray-600 mb-8">나에게 필요한 화장품 성분을 찾아보세요!</p>
+
+    <div class="flex items-center space-x-2 text-xs text-gray-600 mb-4">
+      <input type="checkbox" id="consent-check" class="accent-orange-300 w-4 h-4">
+      <label id="consent-label" for="consent-check" class="cursor-pointer">
+        <a href="privacy.html" class="text-blue-600 underline font-medium" target="_blank" id="consent-link">개인정보수집</a>에 동의합니다
+      </label>
+    </div>
+
+    <button onclick="goToNextPage()" class="w-full text-center bg-orange-200 hover:bg-orange-300 text-black font-semibold py-2 px-4 rounded-lg shadow mb-10">
+      START
+    </button>
+
+    <div class="flex flex-wrap justify-center gap-3 text-sm text-gray-600">
+      <button onclick="setLanguage('Korean')" class="lang-btn px-3 py-1 border rounded">한국어</button>
+      <button onclick="setLanguage('English')" class="lang-btn px-3 py-1 border rounded">English</button>
+      <button onclick="setLanguage('Chinese')" class="lang-btn px-3 py-1 border rounded">中文</button>
+      <button onclick="setLanguage('Japanese')" class="lang-btn px-3 py-1 border rounded">日本語</button>
+      <button onclick="setLanguage('Vietnamese')" class="lang-btn px-3 py-1 border rounded">Tiếng Việt</button>
+      <button onclick="setLanguage('Indonesian')" class="lang-btn px-3 py-1 border rounded">Bahasa Indonesia</button>
+      <button onclick="setLanguage('Russian')" class="lang-btn px-3 py-1 border rounded">Русский</button>
+    </div>
+  </div>
+
+  <footer class="text-center text-gray-400 text-xs mt-10 mb-4">
+    feedback and collaboration inquiry : hearmyskin58@gmail.com
+  </footer>
+
+  <script>
+    const translations = {
+      Korean: {
+        title: "나에게 맞는 화장품은?",
+        subtitle: "나에게 필요한 화장품 성분을 찾아보세요!",
+        consent: "에 동의합니다",
+        consentLink: "개인정보수집",
+        alert: "개인정보 수집에 동의해 주세요."
+      },
+      English: {
+        title: "What cosmetics suit me?",
+        subtitle: "Find the cosmetic ingredients that fit you!",
+        consent: "I agree",
+        consentLink: "Privacy Collection",
+        alert: "Please agree to the collection of personal information."
+      },
+      Chinese: {
+        title: "适合我的化妆品是？",
+        subtitle: "请找出适合我肤质的化妆品成分！",
+        consent: "同意",
+        consentLink: "个人信息收集",
+        alert: "请同意收集个人信息。"
+      },
+      Japanese: {
+        title: "私に合う化粧品は？",
+        subtitle: "あなたの肌に合った化粧品成分を見つけましょう！",
+        consent: "に同意します",
+        consentLink: "個人情報収集",
+        alert: "個人情報の収集に同意してください。"
+      },
+      Vietnamese: {
+        title: "Mỹ phẩm nào phù hợp với tôi?",
+        subtitle: "Hãy tìm thành phần mỹ phẩm phù hợp với làn da của bạn!",
+        consent: "tôi đồng ý",
+        consentLink: "Thu thập thông tin cá nhân",
+        alert: "Vui lòng đồng ý với việc thu thập thông tin cá nhân."
+      },
+      Indonesian: {
+        title: "Kosmetik apa yang cocok untuk saya?",
+        subtitle: "Temukan bahan kosmetik yang sesuai untuk kulit Anda!",
+        consent: "saya setuju",
+        consentLink: "Pengumpulan Informasi Pribadi",
+        alert: "Silakan setujui pengumpulan informasi pribadi."
+      },
+      Russian: {
+        title: "Какая косметика мне подходит?",
+        subtitle: "Найдите ингредиенты, подходящие для вашей кожи!",
+        consent: "я согласен",
+        consentLink: "Сбор персональной информации",
+        alert: "Пожалуйста, согласитесь на сбор личной информации."
+      }
+    };
+
+    function setLanguage(lang) {
+      localStorage.setItem("selectedLanguage", lang);
+      const t = translations[lang] || translations["Korean"];
+      document.getElementById("title-text").innerText = t.title;
+      document.getElementById("subtitle-text").innerText = t.subtitle;
+      document.getElementById("consent-label").innerHTML = 
+        '<a href="privacy.html" class="text-blue-600 underline font-medium" target="_blank" id="consent-link">' +
+        t.consentLink + '</a> ' + t.consent;
+    }
+
+    function goToNextPage() {
+      const lang = localStorage.getItem("selectedLanguage") || "Korean";
+      const t = translations[lang];
+      if (!document.getElementById("consent-check").checked) {
+        alert(t.alert);
+        return;
+      }
+      window.location.href = "profile.html";
+    }
+
+    window.onload = () => {
+      const lang = localStorage.getItem("selectedLanguage") || "Korean";
+      setLanguage(lang);
+    };
+  </script>
+</body>
+</html>

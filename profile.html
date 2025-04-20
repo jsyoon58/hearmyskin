@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Profile</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+  <div class="max-w-md mx-auto p-6 space-y-6">
+    <h1 id="title" class="text-2xl font-bold text-center">프로필을 입력해주세요</h1>
+
+    <!-- 연령대 -->
+    <div>
+      <label id="age-label-title" class="block font-medium mb-2">연령대 (10대~90대)</label>
+      <div class="flex justify-between text-sm text-gray-600" id="age-options"></div>
+      <input type="range" min="1" max="9" step="1" value="3" id="age-range" class="w-full mt-2">
+      <p class="text-sm text-gray-600 mt-1 text-right" id="age-label">30대</p>
+    </div>
+
+    <!-- 성별 -->
+    <div>
+      <label id="gender-title" class="block font-medium mb-2">성별</label>
+      <div class="space-y-2" id="gender-options"></div>
+    </div>
+
+    <!-- 선호 브랜드 -->
+    <div>
+      <label id="brand-title" class="block font-medium mb-2">선호하는 브랜드를 적어주세요</label>
+      <textarea id="brand-input" class="w-full border rounded p-2" rows="3" placeholder="예: 시카, 닥터지, 라로슈포제 등"></textarea>
+    </div>
+
+    <!-- 알러지 -->
+    <div>
+      <label id="allergy-title" class="block font-medium mb-2">알러지가 있다면 자유롭게 입력해주세요</label>
+      <textarea id="allergy-input" class="w-full border rounded p-2" rows="3" placeholder="예: 꽃가루, 특정 성분 등"></textarea>
+    </div>
+
+    <!-- 제출 -->
+    <button id="submit-button" onclick="goToNextPage()" class="w-full bg-orange-200 hover:bg-orange-300 text-black font-semibold py-2 px-4 rounded shadow">
+      다음
+    </button>
+  </div>
+
+  <script>
+    const translations = {
+      Korean: {
+        title: "프로필을 입력해주세요",
+        ageTitle: "연령대 (10대~90대)",
+        ageValues: ["10대","20대","30대","40대","50대","60대","70대","80대","90대"],
+        genderTitle: "성별",
+        genderOptions: ["남", "여", "밝히고 싶지 않음"],
+        brandTitle: "선호하는 브랜드를 적어주세요",
+        brandPlaceholder: "예: 시카, 닥터지, 라로슈포제 등",
+        allergyTitle: "알러지가 있다면 자유롭게 입력해주세요",
+        placeholder: "예: 꽃가루, 특정 성분 등",
+        next: "다음",
+        alert: "성별을 선택해주세요."
+      },
+      English: {
+        title: "Please enter your profile",
+        ageTitle: "Age Range (Teens ~ 90s)",
+        ageValues: ["Teens", "20s", "30s", "40s", "50s", "60s", "70s", "80s", "90s"],
+        genderTitle: "Gender",
+        genderOptions: ["Male", "Female", "Prefer not to say"],
+        brandTitle: "Please enter your preferred brands",
+        brandPlaceholder: "e.g. Cica, Dr.G, La Roche-Posay, etc.",
+        allergyTitle: "Please enter any allergies you have",
+        placeholder: "e.g. pollen, specific ingredients",
+        next: "Next",
+        alert: "Please select a gender."
+      },
+      Japanese: {
+        title: "プロフィールを入力してください",
+        ageTitle: "年齢層（10代～90代）",
+        ageValues: ["10代","20代","30代","40代","50代","60代","70代","80代","90代"],
+        genderTitle: "性別",
+        genderOptions: ["男性", "女性", "答えたくない"],
+        brandTitle: "好みのブランドを記入してください",
+        brandPlaceholder: "例：シカ、ドクタージー、ラロッシュポゼなど",
+        allergyTitle: "アレルギーがある場合は自由に入力してください",
+        placeholder: "例：花粉、特定の成分など",
+        next: "次へ",
+        alert: "性別を選択してください。"
+      },
+      Chinese: {
+        title: "请输入您的个人信息",
+        ageTitle: "年龄段（10岁至90岁）",
+        ageValues: ["10代","20代","30代","40代","50代","60代","70代","80代","90代"],
+        genderTitle: "性别",
+        genderOptions: ["男", "女", "不愿透露"],
+        brandTitle: "请输入您喜欢的品牌",
+        brandPlaceholder: "例如：Cica、Dr.G、理肤泉等",
+        allergyTitle: "如有过敏，请自由填写",
+        placeholder: "例如：花粉、某种成分等",
+        next: "下一步",
+        alert: "请选择性别。"
+      },
+      Vietnamese: {
+        title: "Vui lòng nhập thông tin cá nhân",
+        ageTitle: "Độ tuổi (10~90)",
+        ageValues: ["10s", "20s", "30s", "40s", "50s", "60s", "70s", "80s", "90s"],
+        genderTitle: "Giới tính",
+        genderOptions: ["Nam", "Nữ", "Không muốn tiết lộ"],
+        brandTitle: "Vui lòng ghi thương hiệu ưa thích của bạn",
+        brandPlaceholder: "Ví dụ: Cica, Dr.G, La Roche-Posay...",
+        allergyTitle: "Hãy ghi lại những dị ứng nếu có",
+        placeholder: "Ví dụ: phấn hoa, thành phần cụ thể...",
+        next: "Tiếp theo",
+        alert: "Vui lòng chọn giới tính."
+      },
+      Indonesian: {
+        title: "Silakan masukkan profil Anda",
+        ageTitle: "Rentang Usia (10~90)",
+        ageValues: ["10-an", "20-an", "30-an", "40-an", "50-an", "60-an", "70-an", "80-an", "90-an"],
+        genderTitle: "Jenis Kelamin",
+        genderOptions: ["Laki-laki", "Perempuan", "Tidak ingin menyebutkan"],
+        brandTitle: "Silakan tulis merek favorit Anda",
+        brandPlaceholder: "Contoh: Cica, Dr.G, La Roche-Posay...",
+        allergyTitle: "Silakan isi alergi yang Anda miliki",
+        placeholder: "Contoh: serbuk sari, bahan tertentu...",
+        next: "Lanjut",
+        alert: "Silakan pilih jenis kelamin."
+      },
+      Russian: {
+        title: "Пожалуйста, введите информацию о себе",
+        ageTitle: "Возрастной диапазон (10-90 лет)",
+        ageValues: ["10", "20", "30", "40", "50", "60", "70", "80", "90"],
+        genderTitle: "Пол",
+        genderOptions: ["Мужской", "Женский", "Предпочитаю не указывать"],
+        brandTitle: "Укажите предпочитаемые бренды",
+        brandPlaceholder: "например: Cica, Dr.G, La Roche-Posay и др.",
+        allergyTitle: "Укажите, есть ли у вас аллергия",
+        placeholder: "например, пыльца, определенные ингредиенты",
+        next: "Далее",
+        alert: "Пожалуйста, выберите пол."
+      }
+    };
+
+    const lang = localStorage.getItem("selectedLanguage") || "Korean";
+    const t = translations[lang];
+
+    // UI 텍스트 삽입
+    document.getElementById("title").innerText = t.title;
+    document.getElementById("age-label-title").innerText = t.ageTitle;
+    document.getElementById("gender-title").innerText = t.genderTitle;
+    document.getElementById("allergy-title").innerText = t.allergyTitle;
+    document.getElementById("brand-title").innerText = t.brandTitle;
+    document.getElementById("submit-button").innerText = t.next;
+    document.getElementById("allergy-input").placeholder = t.placeholder;
+    document.getElementById("brand-input").placeholder = t.brandPlaceholder;
+
+    const ageSpans = t.ageValues.map(age => `<span>${age}</span>`).join('');
+    document.getElementById("age-options").innerHTML = ageSpans;
+
+    const genderOptionsDiv = document.getElementById("gender-options");
+    genderOptionsDiv.innerHTML = "";
+    t.genderOptions.forEach(option => {
+      const label = document.createElement("label");
+      label.className = "flex items-center";
+      label.innerHTML = `<input type="radio" name="gender" value="${option}" class="mr-2">${option}`;
+      genderOptionsDiv.appendChild(label);
+    });
+
+    const rangeInput = document.getElementById("age-range");
+    const ageLabel = document.getElementById("age-label");
+
+    rangeInput.addEventListener('input', () => {
+      ageLabel.textContent = t.ageValues[rangeInput.value - 1];
+    });
+
+    ageLabel.textContent = t.ageValues[rangeInput.value - 1];
+
+    function goToNextPage() {
+      const age = t.ageValues[rangeInput.value - 1];
+      const gender = document.querySelector('input[name="gender"]:checked');
+      const allergy = document.getElementById("allergy-input").value.trim();
+      const brand = document.getElementById("brand-input").value.trim();
+
+      if (!gender) {
+        alert(t.alert);
+        return;
+      }
+
+      localStorage.setItem("user_age", age);
+      localStorage.setItem("user_gender", gender.value);
+      localStorage.setItem("user_allergy", allergy);
+      localStorage.setItem("user_brand", brand);
+
+      window.location.href = "page2.html";
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">피부 고민 선택</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    input[type="checkbox"]:checked {
+      accent-color: #fed7aa;
+    }
+  </style>
+</head>
+<body class="bg-white text-gray-800 font-sans">
+  <div class="max-w-md mx-auto p-6">
+    <h1 id="title" class="text-2xl font-bold mb-2 text-center">피부 고민은 무엇인가요?</h1>
+    <p id="subtitle" class="text-sm text-center text-gray-600 mb-6">두 가지를 선택해 주세요</p>
+
+    <form id="skin-form" class="space-y-4">
+      <div class="space-y-2" id="checkbox-container"></div>
+      <button type="submit" class="w-full bg-orange-200 hover:bg-orange-300 text-black font-semibold py-2 px-4 rounded-lg shadow" id="submit-button">제출</button>
+    </form>
+  </div>
+
+  <script>
+    const lang = localStorage.getItem("selectedLanguage") || "Korean";
+
+    const langKey = {
+      Korean: "kor", English: "eng", Chinese: "chn", Japanese: "jpn",
+      Vietnamese: "vie", Indonesian: "id", Russian: "ru"
+    };
+
+    const concernList = [
+      { kor: "민감성", eng: "Sensitive", chn: "敏感", jpn: "敏感肌", vie: "Da nhạy cảm", id: "Kulit Sensitif", ru: "Чувствительная кожа" },
+      { kor: "건성", eng: "Dry", chn: "干性", jpn: "乾燥肌", vie: "Da khô", id: "Kering", ru: "Сухая" },
+      { kor: "지성", eng: "Oily", chn: "油性", jpn: "脂性肌", vie: "Da dầu", id: "Berminyak", ru: "Жирная" },
+      { kor: "복합성(건성과 지성 혼합)", eng: "Combination", chn: "混合性", jpn: "混合性", vie: "Da hỗn hợp", id: "Campuran", ru: "Комбинированная" },
+      { kor: "여드름", eng: "Acne", chn: "痘痘", jpn: "ニキビ", vie: "Mụn", id: "Jerawat", ru: "Акне" },
+      { kor: "모공 축소", eng: "Pore Care", chn: "毛孔护理", jpn: "毛穴ケア", vie: "Lỗ chân lông", id: "Pori", ru: "Поры" },
+      { kor: "수분 공급", eng: "Hydration", chn: "补水", jpn: "保湿", vie: "Cấp nước", id: "Melembapkan", ru: "Увлажнение" },
+      { kor: "피지 조절", eng: "Oil Control", chn: "控油", jpn: "皮脂コントロール", vie: "Kiểm soát dầu", id: "Kontrol Minyak", ru: "Контроль жирности" },
+      { kor: "주름 개선", eng: "Anti-Wrinkle", chn: "抗皱", jpn: "シワ対策", vie: "Chống nhăn", id: "Anti-Kerut", ru: "Против морщин" },
+      { kor: "미백", eng: "Whitening", chn: "美白", jpn: "美白", vie: "Làm trắng", id: "Pemutih", ru: "Осветление" },
+      { kor: "기미·잡티(제거)", eng: "Spot Removal", chn: "祛斑", jpn: "シミ（除去）", vie: "Đốm", id: "Bintik", ru: "Пигментные пятна" },
+      { kor: "흉터(제거)", eng: "Scar Removal", chn: "祛疤", jpn: "傷跡（除去）", vie: "Sẹo", id: "Luka", ru: "Шрамы" }
+    ];
+
+    const texts = {
+      Korean: {
+        title: "피부 고민은 무엇인가요?",
+        subtitle: "두 가지를 선택해 주세요",
+        submit: "제출",
+        alert: "피부 고민을 두 가지 선택해 주세요."
+      },
+      English: {
+        title: "What are your skin concerns?",
+        subtitle: "Please choose two",
+        submit: "Submit",
+        alert: "Please select two skin concerns."
+      },
+      Chinese: {
+        title: "您的皮肤烦恼是什么？",
+        subtitle: "请选择两个",
+        submit: "提交",
+        alert: "请选择两个皮肤烦恼。"
+      },
+      Japanese: {
+        title: "お肌の悩みは何ですか？",
+        subtitle: "2つ選んでください",
+        submit: "提出する",
+        alert: "2つの肌の悩みを選んでください。"
+      },
+      Vietnamese: {
+        title: "Mối quan tâm về da của bạn là gì?",
+        subtitle: "Hãy chọn hai",
+        submit: "Gửi đi",
+        alert: "Vui lòng chọn hai mối quan tâm về da."
+      },
+      Indonesian: {
+        title: "Apa masalah kulit Anda?",
+        subtitle: "Silakan pilih dua",
+        submit: "Kirim",
+        alert: "Silakan pilih dua masalah kulit."
+      },
+      Russian: {
+        title: "Какие у вас проблемы с кожей?",
+        subtitle: "Пожалуйста, выберите два",
+        submit: "Отправить",
+        alert: "Пожалуйста, выберите два варианта."
+      }
+    };
+
+    const key = langKey[lang];
+    const langText = texts[lang];
+
+    window.onload = () => {
+      // 텍스트 교체
+      document.getElementById("title").textContent = langText.title;
+      document.getElementById("subtitle").textContent = langText.subtitle;
+      document.getElementById("submit-button").textContent = langText.submit;
+      document.getElementById("page-title").textContent = langText.title;
+
+      // 체크박스 항목 생성
+      const container = document.getElementById("checkbox-container");
+      concernList.forEach((item, index) => {
+        const label = document.createElement("label");
+        label.className = "flex items-center";
+        label.innerHTML = `<input type="checkbox" class="mr-2" name="option${index+1}"/> ${item[key]}`;
+        container.appendChild(label);
+      });
+
+      // 체크박스 제한
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach(cb => {
+        cb.addEventListener('change', () => {
+          const checked = [...checkboxes].filter(cb => cb.checked);
+          checkboxes.forEach(box => box.disabled = checked.length >= 2 && !box.checked);
+        });
+      });
+
+      // 제출 이벤트
+      const form = document.getElementById("skin-form");
+      form.addEventListener("submit", e => {
+        e.preventDefault();
+        const selected = [...checkboxes].filter(cb => cb.checked).map(cb => cb.parentElement.textContent.trim());
+        if (selected.length !== 2) {
+          alert(langText.alert);
+          return;
+        }
+        const selectedKor = selected.map(sel => {
+          const found = concernList.find(item => item[key] === sel);
+          return found ? found.kor : sel;
+        });
+        const combo = `${selectedKor[0]}+${selectedKor[1]}`;
+        window.location.href = `page3.html?combo=${encodeURIComponent(combo)}`;
+      });
+    };
+  </script>
+</body>
+</html>
