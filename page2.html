@@ -110,6 +110,12 @@
         concern2: selectedKor[1],
       };
 
+      // ✅ undefined 또는 null 필드 제거
+Object.keys(data).forEach(key => {
+  if (data[key] === undefined || data[key] === null) {
+    delete data[key];
+  }
+});
       sendToAirtableAndGo(data);
     });
   };
