@@ -13,10 +13,27 @@
 
     <div id="ingredients" class="space-y-6"></div>
 
-    <div class="text-center mt-8">
-      <button onclick="history.back()" class="px-4 py-2 bg-orange-200 hover:bg-orange-300 rounded shadow">뒤로 가기</button>
+    <!-- 하단 문구 -->
+    <div class="text-center mt-10 text-gray-400 text-sm" id="screenshot-text">
+      📷 캡쳐하세요! 📷
     </div>
   </div>
+
+  <script>
+    const lang = localStorage.getItem("language") || "ko";
+    const translations = {
+      ko: "📷 캡쳐하세요! 📷",
+      en: "📷 Take a screenshot! 📷",
+      zh: "📷 请截图！📷",
+      ja: "📷 スクリーンショットを撮ってください！📷",
+      vi: "📷 Hãy chụp màn hình! 📷",
+      id: "📷 Silakan ambil tangkapan layar! 📷",
+      ru: "📷 Сделайте скриншот! 📷"
+    };
+    document.getElementById("screenshot-text").innerText = translations[lang] || translations["ko"];
+  </script>
+</body>
+
 
   
 
