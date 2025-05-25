@@ -50,48 +50,20 @@
         title: "피부 고민은 무엇인가요?",
         subtitle: "두 가지를 선택해 주세요",
         submit: "나에게 맞는 성분 알아보기",
-        alert: "피부 고민을 두 가지 선택해 주세요."
+        alert: "피부 고민을 두 가지 선택해 주세요.",
+        alreadySubmitted: "이미 설문을 제출하셨습니다."
       },
       English: {
         title: "What are your skin concerns?",
         subtitle: "Please choose two",
         submit: "Find the Right Ingredients for Me",
-        alert: "Please select two skin concerns."
-      },
-      Chinese: {
-        title: "您的皮肤烦恼是什么？",
-        subtitle: "请选择两个",
-        submit: "找到适合我的成分",
-        alert: "请选择两个皮肤烦恼。"
-      },
-      Japanese: {
-        title: "お肌の悩みは何ですか？",
-        subtitle: "2つ選んでください",
-        submit: "自分に合った成分を見つける",
-        alert: "2つの肌の悩みを選んでください。"
-      },
-      Vietnamese: {
-        title: "Mối quan tâm về da của bạn là gì?",
-        subtitle: "Hãy chọn hai",
-        submit: "Tìm hiểu thành phần phù hợp với tôi",
-        alert: "Vui lòng chọn hai mối quan tâm về da."
-      },
-      Indonesian: {
-        title: "Apa masalah kulit Anda?",
-        subtitle: "Silakan pilih dua",
-        submit: "Cari Tahu Kandungan yang Cocok untuk Saya",
-        alert: "Silakan pilih dua masalah kulit."
-      },
-      Russian: {
-        title: "Какие у вас проблемы с кожей?",
-        subtitle: "Пожалуйста, выберите два",
-        submit: "Найти подходящие для меня компоненты",
-        alert: "Пожалуйста, выберите два варианта."
+        alert: "Please select two skin concerns.",
+        alreadySubmitted: "You have already submitted this survey."
       }
     };
 
     const key = langKey[lang];
-    const langText = texts[lang] || texts["Korean"]; // fallback 처리
+    const langText = texts[lang] || texts["Korean"];
 
     window.onload = () => {
       document.getElementById("title").textContent = langText.title;
@@ -118,6 +90,13 @@
       const form = document.getElementById("skin-form");
       form.addEventListener("submit", e => {
         e.preventDefault();
+
+        // ✅ Step 1: 중복 확인
+        if (localStorage.getItem("submitted") === "true") {
+          alert(langText.alreadySubmitted);
+          return;
+        }
+
         const selected = [...checkboxes].filter(cb => cb.checked).map(cb => cb.parentElement.textContent.trim());
         if (selected.length !== 2) {
           alert(langText.alert);
@@ -153,7 +132,6 @@
       const airtableApiKey = 'Bearer patZYCOOyyBDeuciJ.96030290b2aa83dbc1605b5ce9c55903e3be7b066c3891101821b80cd6582a95';
       const baseId = 'apphc37JyCEAozVdD';
       const tableName = 'survey_responses';
-
       const url = `https://api.airtable.com/v0/${baseId}/${tableName}`;
 
       const response = await fetch(url, {
@@ -166,11 +144,11 @@
       });
 
       if (response.ok) {
+        // ✅ Step 2: 제출 완료 저장
+        localStorage.setItem("submitted", "true");
         window.location.href = `page3.html?combo=${encodeURIComponent(data.concern1 + '+' + data.concern2)}`;
       } else {
-        const errorText = await response.text();
-        console.error("Airtable 오류 응답:", errorText);
-        alert("Airtable 저장 실패 😢\n" + errorText);
+        alert("데이터 전송에 실패했습니다. 다시 시도해 주세요.");
       }
     }
   </script>
